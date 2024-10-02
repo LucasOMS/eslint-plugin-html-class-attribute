@@ -28,8 +28,5 @@ export = {
 //       Groups should be defined in order rule options
 //       Groups should be optional
 //       Groups can be named for better error message and easier understanding
-// - [5] Name regex for better error message displaying name of the regex instead of the regex itself
-//       Name should be optional, if not defined, use the regex itself
-//       Rule should take string for only regex or object with name and regex when name is provided
 
 // Note : when all [5] priority are done, consider releasing 1.0.0 version

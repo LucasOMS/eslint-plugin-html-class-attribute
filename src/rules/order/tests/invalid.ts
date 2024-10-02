@@ -52,6 +52,20 @@ export const invalid = [
             shouldComeBeforeClass: 'a',
         },
     ),
+
+    // With named regex
+    createInvalidOrderRuleTestCase(
+        { order: [{ regex: '^first', name: 'First class' }], alphabetical: false },
+        `<h1 class="aa-a first aa-b aaa">Foo</h1>`,
+        `<h1 class="first aa-a aa-b aaa">Foo</h1>`,
+        {
+            type: 'order',
+            classInError: 'first',
+            classInErrorRegexMatch: '^first',
+            shouldComeBeforeClass: 'aa-a',
+        },
+    ),
+
     // With no match class before the class in error
     createInvalidOrderRuleTestCase(
         { order: ['^first', '^second'], alphabetical: false },

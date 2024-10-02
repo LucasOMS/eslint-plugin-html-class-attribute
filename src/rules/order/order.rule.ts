@@ -24,7 +24,24 @@ const rule: Rule.RuleModule = {
                     'order': {
                         'type': 'array',
                         'items': {
-                            'type': 'string',
+                            'oneOf': [
+                                {
+                                    'type': 'string',
+                                },
+                                {
+                                    'type': 'object',
+                                    'properties': {
+                                        'name': {
+                                            'type': 'string',
+                                        },
+                                        'regex': {
+                                            'type': 'string',
+                                        },
+                                    },
+                                    'required': ['name', 'regex'],
+                                    'additionalProperties': false,
+                                },
+                            ],
                         },
                         'default': [],
                     },

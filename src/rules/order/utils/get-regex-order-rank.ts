@@ -7,6 +7,6 @@ import { OrderRuleOptions } from '../types/order-rule-options';
  * @returns {number} rank of the regex in the order array, 0 has the highest priority in order
  */
 export function getRegexOrderRank(klass: string, order: OrderRuleOptions['order']): number {
-    const res = order.findIndex((regex) => new RegExp(regex).test(klass));
+    const res = order.findIndex((orderRuleRegex) => new RegExp(orderRuleRegex.regex).test(klass));
     return res === -1 ? order.length : res;
 }
