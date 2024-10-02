@@ -7,16 +7,7 @@ import { ClassWithMetadataAndMatches } from './types/class-with-metadata-and-mat
 import { getPreferRuleErrorMessage } from './utils/prefer-rule-error-message';
 import { getCaptureGroupsValueByName } from './utils/get-capture-groups-value-by-name';
 import RuleContext = Rule.RuleContext;
-
-function enrichClassesWithRegexMatchMetadata(classes: ClassWithMetadata[], regexs: string[]): ClassWithMetadataAndMatches[] {
-    return classes.map((classWithMetadata) => {
-        const classMatchesList = classMatchesListAndCaptureGroupByRegex(classWithMetadata.name, regexs);
-        return {
-            ...classWithMetadata,
-            matchMetadata: classMatchesList,
-        };
-    });
-}
+import { enrichClassesWithRegexMatchMetadata } from './utils/enrich-classes-with-regex-match-metadata';
 
 export function preferRuleAngularTemplateParser(context: RuleContext): Rule.RuleListener {
     return {

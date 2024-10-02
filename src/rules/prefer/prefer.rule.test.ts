@@ -15,7 +15,7 @@ describe('@angular-eslint/template-parser', () => {
     });
 });
 
-xdescribe('@html-eslint/parser', () => {
+describe('@html-eslint/parser', () => {
     const testWithHtmlParser = new RuleTester({
         parser: require.resolve('@html-eslint/parser'),
     });

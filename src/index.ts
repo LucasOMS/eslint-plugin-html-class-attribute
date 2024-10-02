@@ -17,7 +17,6 @@ export = {
 
 // TODO list; high number is high priority from 1 to 5
 // === Prefer rule
-// - [5] Implement prefer rule for ESLint HTML Parser
 // - [5] Implement prefer rule fixer for both parsers
 // - [1] consider adding rule for NO match (prefer X if there is A and B class but not C)
 //
