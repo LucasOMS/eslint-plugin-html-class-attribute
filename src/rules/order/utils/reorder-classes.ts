@@ -5,15 +5,19 @@ import { getRegexOrderRank } from './get-regex-order-rank';
 export function reorderClasses(classes: ClassWithMetadata[], ruleOptions: OrderRuleOptions): string {
     return [...classes]
         .sort((classA, classB) => {
-            const aRank = getRegexOrderRank(classA.name, ruleOptions.order);
-            const bRank = getRegexOrderRank(classB.name, ruleOptions.order);
+            const aRanks = getRegexOrderRank(classA.name, ruleOptions);
+            const bRanks = getRegexOrderRank(classB.name, ruleOptions);
 
 
-            if (ruleOptions.alphabetical && aRank === bRank) {
+            if (ruleOptions.alphabetical && aRanks.group === bRanks.group && aRanks.order === bRanks.order) {
                 return classA.name.localeCompare(classB.name);
             }
 
-            return aRank - bRank;
+            if (aRanks.group !== bRanks.group) {
+                return aRanks.group - bRanks.group;
+            }
+
+            return aRanks.order - bRanks.order;
         })
         .map((className: ClassWithMetadata) => {
             return className.name;

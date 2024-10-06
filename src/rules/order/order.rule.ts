@@ -45,6 +45,23 @@ const rule: Rule.RuleModule = {
                         },
                         'default': [],
                     },
+                    'groups': {
+                        'type': 'array',
+                        'items': {
+                            'type': 'object',
+                            'properties': {
+                                'name': {
+                                    'type': 'string',
+                                },
+                                'regex': {
+                                    'type': 'string',
+                                },
+                            },
+                            'required': ['name', 'regex'],
+                            'additionalProperties': false,
+                        },
+                        'default': [],
+                    },
                 },
                 'additionalProperties': false,
             },

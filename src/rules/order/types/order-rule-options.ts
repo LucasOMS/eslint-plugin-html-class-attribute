@@ -1,9 +1,10 @@
 export type OrderRuleOptions = {
     alphabetical: boolean;
-    order: OrderRuleRegex[];
+    order: OrderRuleNamedRegex[];
+    groups: OrderRuleNamedRegex[];
 }
 
-export interface OrderRuleRegex {
+export interface OrderRuleNamedRegex {
     name: string;
     regex: string;
 }

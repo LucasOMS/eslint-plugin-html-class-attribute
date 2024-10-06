@@ -1,9 +1,10 @@
-import { OrderRuleOptions, OrderRuleRegex } from '../types/order-rule-options';
+import { OrderRuleOptions, OrderRuleNamedRegex } from '../types/order-rule-options';
 
 export function getOrderRuleOptions(context: any): OrderRuleOptions {
     const res = {
         alphabetical: false,
         order: [],
+        groups: [],
         ...(context.options[0] ?? {}),
     };
 
@@ -13,7 +14,7 @@ export function getOrderRuleOptions(context: any): OrderRuleOptions {
     };
 }
 
-export function regexOrNamedRegexToOrderRuleRegex(item: string | OrderRuleRegex): OrderRuleRegex {
+export function regexOrNamedRegexToOrderRuleRegex(item: string | OrderRuleNamedRegex): OrderRuleNamedRegex {
     if (typeof item === 'string') {
         return {
             name: item,

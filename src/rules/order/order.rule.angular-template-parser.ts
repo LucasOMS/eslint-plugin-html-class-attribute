@@ -1,8 +1,12 @@
 import { Rule } from 'eslint';
 import { getOrderRuleOptions } from './utils/get-order-rule-options';
 import { ClassWithMetadata } from './types/class-with-metadata';
-import { getRegexOrderRank } from './utils/get-regex-order-rank';
-import { alphabeticalErrorMessage, regexOrderErrorMessage } from './utils/order-rule-error-messages';
+import { getRegexOrderRank, RegexRanks } from './utils/get-regex-order-rank';
+import {
+    alphabeticalErrorMessage,
+    groupOrderErrorMessage,
+    regexOrderErrorMessage,
+} from './utils/order-rule-error-messages';
 import { OrderRuleOptions } from './types/order-rule-options';
 import { reorderClasses } from './utils/reorder-classes';
 import { GetClassesWithMetadata } from '../../utils/get-classes-with-metadata';
@@ -37,21 +41,21 @@ export function orderRuleAngularTemplateParser(context: RuleContext): Rule.RuleL
 
             let previousClass = classes[0];
             let previousClassName = classes[0].name;
-            let previousClassRegexRank: number = getRegexOrderRank(previousClass.name, options.order);
+            let previousClassRegexRanks: RegexRanks = getRegexOrderRank(previousClass.name, options);
 
             for (const klass of classes.slice(1)) {
                 const currentClassName = klass.name;
-
                 // Compute rank for each attribute based on the order option
-                let classRegexRank = getRegexOrderRank(currentClassName, options.order);
+                let classRanks = getRegexOrderRank(currentClassName, options);
 
-                if (previousClassRegexRank > classRegexRank) {
+                // If groups are in wrong order
+                if (previousClassRegexRanks.group > classRanks.group) {
                     context.report({
-                        message: regexOrderErrorMessage(
+                        message: groupOrderErrorMessage(
                             currentClassName,
-                            options.order[classRegexRank],
+                            options.groups[classRanks.group],
                             previousClassName,
-                            options.order[previousClassRegexRank],
+                            options.groups[previousClassRegexRanks.group],
                         ),
                         node: classTextAttribute,
                         fix: fixClassesOrder(classValueRange, options, classes),
@@ -60,7 +64,26 @@ export function orderRuleAngularTemplateParser(context: RuleContext): Rule.RuleL
                     return;
                 }
 
-                if (options.alphabetical && previousClassRegexRank === classRegexRank) {
+                // If groups are the same, but order is in wrong order
+                if (previousClassRegexRanks.group === classRanks.group && previousClassRegexRanks.order > classRanks.order) {
+                    context.report({
+                        message: regexOrderErrorMessage(
+                            currentClassName,
+                            options.order[classRanks.order],
+                            previousClassName,
+                            options.order[previousClassRegexRanks.order],
+                        ),
+                        node: classTextAttribute,
+                        fix: fixClassesOrder(classValueRange, options, classes),
+                        loc: klass.loc,
+                    });
+                    return;
+                }
+
+                // If Groups and Order are the same, but alphabetical is enabled
+                if (options.alphabetical
+                    && previousClassRegexRanks.group === classRanks.group
+                    && previousClassRegexRanks.order === classRanks.order) {
                     // Compare current attribute with previous attribute
                     if (previousClassName.localeCompare(currentClassName) === 1) {
                         context.report({
@@ -68,7 +91,7 @@ export function orderRuleAngularTemplateParser(context: RuleContext): Rule.RuleL
                                 previousClassName,
                                 currentClassName,
                                 options.order.length > 0,
-                                options.order[classRegexRank],
+                                options.order[classRanks.order],
                             ),
                             node: classTextAttribute,
                             fix: fixClassesOrder(classValueRange, options, classes),
@@ -80,7 +103,7 @@ export function orderRuleAngularTemplateParser(context: RuleContext): Rule.RuleL
 
                 previousClass = klass;
                 previousClassName = currentClassName;
-                previousClassRegexRank = classRegexRank;
+                previousClassRegexRanks = classRanks;
             }
         },
     };

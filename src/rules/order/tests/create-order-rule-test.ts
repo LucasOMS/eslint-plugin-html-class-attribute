@@ -1,26 +1,32 @@
 import { RuleTester } from 'eslint';
-import { alphabeticalErrorMessage, regexOrderErrorMessage } from '../utils/order-rule-error-messages';
+import {
+    alphabeticalErrorMessage,
+    groupOrderErrorMessage,
+    regexOrderErrorMessage,
+} from '../utils/order-rule-error-messages';
 import { regexOrNamedRegexToOrderRuleRegex } from '../utils/get-order-rule-options';
-import { OrderRuleRegex } from '../types/order-rule-options';
+import { OrderRuleNamedRegex } from '../types/order-rule-options';
 import ValidTestCase = RuleTester.ValidTestCase;
 import InvalidTestCase = RuleTester.InvalidTestCase;
 
 type TestCaseOptions = {
     alphabetical?: boolean;
-    order?: (string | OrderRuleRegex)[];
+    order?: (string | OrderRuleNamedRegex)[];
+    groups?: OrderRuleNamedRegex[];
 }
 
 export function createValidOrderRuleTestCase(options: TestCaseOptions, code: string): ValidTestCase {
     return {
         options: [{
             order: options.order ?? [],
+            groups: options.groups ?? [],
             alphabetical: options.alphabetical ?? false,
         }],
         code: code,
     };
 }
 
-type InvalidOrderRuleErrorSpecs = OrderRuleRegexErrorSpecs | OrderRuleAlphabeticalErrorSpecs;
+type InvalidOrderRuleErrorSpecs = OrderRuleRegexErrorSpecs | OrderRuleAlphabeticalErrorSpecs | OrderRuleGroupErrorSpecs;
 
 interface OrderRuleRegexErrorSpecs {
     type: 'order';
@@ -28,7 +34,14 @@ interface OrderRuleRegexErrorSpecs {
     shouldComeBeforeClass: string;
     classInErrorRegexMatch?: string;
     shouldComeBeforeClassRegexMatch?: string;
+}
 
+interface OrderRuleGroupErrorSpecs {
+    type: 'order-group';
+    classInError: string;
+    shouldComeBeforeClass: string;
+    groupName: string;
+    shouldComeBeforeGroupName?: string;
 }
 
 interface OrderRuleAlphabeticalErrorSpecs {
@@ -46,21 +59,34 @@ export function createInvalidOrderRuleTestCase(
 ): InvalidTestCase {
     const order = options.order ?? [];
     let message: string;
-    if (errorSpec.type === 'order') {
-        message = regexOrderErrorMessage(
-            errorSpec.classInError,
-            getOrderRuleRegex(errorSpec.classInErrorRegexMatch),
-            errorSpec.shouldComeBeforeClass,
-            getOrderRuleRegex(errorSpec.shouldComeBeforeClassRegexMatch),
-        );
-    } else {
-        message = alphabeticalErrorMessage(
-            errorSpec.shouldComeBeforeClass,
-            errorSpec.classInError,
-            order.length > 0,
-            getOrderRuleRegex(errorSpec.matchedRegex),
-        );
+
+    switch (errorSpec.type) {
+        case 'order':
+            message = regexOrderErrorMessage(
+                errorSpec.classInError,
+                getOrderRuleRegex(errorSpec.classInErrorRegexMatch),
+                errorSpec.shouldComeBeforeClass,
+                getOrderRuleRegex(errorSpec.shouldComeBeforeClassRegexMatch),
+            );
+            break;
+        case 'order-group':
+            message = groupOrderErrorMessage(
+                errorSpec.classInError,
+                getOrderRuleGroupByName(errorSpec.groupName),
+                errorSpec.shouldComeBeforeClass,
+                getOrderRuleGroupByName(errorSpec.shouldComeBeforeGroupName),
+            );
+            break;
+        case 'alphabetical':
+            message = alphabeticalErrorMessage(
+                errorSpec.shouldComeBeforeClass,
+                errorSpec.classInError,
+                order.length > 0,
+                getOrderRuleRegex(errorSpec.matchedRegex),
+            );
+            break;
     }
+
     const codeLines = code.split('\n');
     const classInErrorLine = codeLines.findIndex((line) => line.includes(errorSpec.classInError)) + 1;
     if (classInErrorLine === 0) {
@@ -71,6 +97,7 @@ export function createInvalidOrderRuleTestCase(
     return {
         options: [{
             order,
+            groups: options.groups ?? [],
             alphabetical: options.alphabetical ?? false,
         }],
         code: code,
@@ -86,7 +113,7 @@ export function createInvalidOrderRuleTestCase(
         ],
     };
 
-    function getOrderRuleRegex(regex: string | undefined): OrderRuleRegex | undefined {
+    function getOrderRuleRegex(regex: string | undefined): OrderRuleNamedRegex | undefined {
         if (!regex) {
             return undefined;
         }
@@ -99,5 +126,12 @@ export function createInvalidOrderRuleTestCase(
             })?.name ?? regex,
             regex: regex,
         };
+    }
+
+    function getOrderRuleGroupByName(name: string | undefined): OrderRuleNamedRegex | undefined {
+        if (!name) {
+            return undefined;
+        }
+        return options?.groups?.find(o => o.name === name);
     }
 }
