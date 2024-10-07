@@ -12,13 +12,16 @@ const rule: Rule.RuleModule = {
             category: 'Best Practices',
             recommended: false,
         },
-        schema: {
-            type: 'array',
-            minItems: 1,
-            items: {
-                type: 'string',
+        schema: [
+            {
+                type: 'array',
+                minItems: 1,  // At least one forbidden pattern must be provided
+                uniqueItems: true,
+                items: {
+                    type: 'string',
+                },
             },
-        },
+        ],
     },
     create: (context: RuleContext): Rule.RuleListener => {
         return getImplementationByParser(

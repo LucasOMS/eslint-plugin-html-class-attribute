@@ -18,9 +18,9 @@ export function forbiddenRuleAngularTemplateParser(context: RuleContext): Rule.R
                         message: getForbiddenRuleErrorMessage(className),
                         loc: klass.loc,
                     });
+                    return;
                 }
             }
-
         },
     };
 }

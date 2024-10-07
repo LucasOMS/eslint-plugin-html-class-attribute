@@ -13,25 +13,27 @@ const rule: Rule.RuleModule = {
             category: 'Best Practices',
             recommended: false,
         },
-        schema: {
-            type: 'array',
-            minItems: 1,
-            items: {
-                type: 'object',
-                properties: {
-                    classList: {
-                        type: 'array',
-                        minItems: 1,
-                        items: {
+        schema: [
+            {
+                type: 'array',
+                minItems: 1,
+                items: {
+                    type: 'object',
+                    properties: {
+                        classList: {
+                            type: 'array',
+                            minItems: 1,
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                        prefer: {
                             type: 'string',
                         },
                     },
-                    prefer: {
-                        type: 'string',
-                    },
                 },
             },
-        },
+        ],
     },
     create: (context: RuleContext): Rule.RuleListener => {
         return getImplementationByParser(

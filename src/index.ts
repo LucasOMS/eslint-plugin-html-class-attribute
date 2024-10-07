@@ -1,5 +1,5 @@
 import classesOrder from './rules/order/order.rule';
-import forbiddenClasses from './rules/order/order.rule';
+import forbiddenClasses from './rules/forbidden/forbidden.rule';
 import preferClasses from './rules/prefer/prefer.rule';
 import recommended from './configs/recommended';
 

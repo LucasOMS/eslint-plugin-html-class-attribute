@@ -8,7 +8,7 @@ type TestCaseOptions = ForbiddenRuleOptions;
 
 export function createValidOrderRuleTestCase(forbiddenClasses: TestCaseOptions, code: string): ValidTestCase {
     return {
-        options: forbiddenClasses ?? [],
+        options: [forbiddenClasses ?? []],
         code: code,
     };
 }
@@ -18,7 +18,6 @@ export function createInvalidForbiddenRuleTestCase(
     code: string,
     classInError: string,
 ): InvalidTestCase {
-    const order = forbiddenClasses ?? [];
     const codeLines = code.split('\n');
     const classInErrorLine = codeLines.findIndex((line) => line.includes(classInError)) + 1;
     if (classInErrorLine === 0) {
@@ -28,7 +27,7 @@ export function createInvalidForbiddenRuleTestCase(
 
     const message = getForbiddenRuleErrorMessage(classInError);
     return {
-        options: forbiddenClasses ?? [],
+        options: [forbiddenClasses ?? []],
         code: code,
         errors: [
             {

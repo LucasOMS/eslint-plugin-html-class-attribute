@@ -5,7 +5,7 @@ import ValidTestCase = RuleTester.ValidTestCase;
 
 export function createValidPreferRuleTestCase(preferList: PreferRuleOptions, code: string): ValidTestCase {
     return {
-        options: preferList ?? [],
+        options: [preferList ?? []],
         code: code,
     };
 }
@@ -18,7 +18,7 @@ export function createInvalidPreferRuleTestCase(
     replaceBy: string,
 ): RuleTester.InvalidTestCase {
     return {
-        options: preferList ?? [],
+        options: [preferList ?? []],
         code: code,
         output: fixedCode,
         errors: [{
