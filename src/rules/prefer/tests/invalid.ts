@@ -42,6 +42,29 @@ export const invalid = [
         'd-flex flex-column gap-4',
         'flex-space-y-4',
     ),
+    createInvalidPreferRuleTestCase(
+        [
+            {
+                classList: [
+                    '^d-flex$',
+                    '^flex-column$',
+                    '^gap-(?<gap>\\d+)',
+                ],
+                prefer: 'flex-space-y-$<gap>',
+            },
+            {
+                classList: [
+                    '^d-flex$',
+                    '^gap-(?<gap>\\d+)',
+                ],
+                prefer: 'flex-space-x-$<gap>',
+            },
+        ],
+        `<h1 class="d-flex flex-column gap-4 mt-0"></h1>`,
+        `<h1 class="flex-space-y-4 mt-0"></h1>`,
+        'd-flex flex-column gap-4',
+        'flex-space-y-4',
+    ),
 
     // endregion
 

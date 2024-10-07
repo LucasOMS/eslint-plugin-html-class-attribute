@@ -61,8 +61,6 @@ export function preferRuleAngularTemplateParser(context: RuleContext): Rule.Rule
 
                 const classesToReplace = matchedClasses.map((c) => c.name);
 
-                console.log(classTextAttribute);
-
                 context.report({
                     node: classTextAttribute,
                     // Highlight class value instead of class attribute
