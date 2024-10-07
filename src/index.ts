@@ -26,3 +26,7 @@ export = {
 //       One boolean to true/false to check exact duplication
 //       List of regex that should not match more than once in the class list
 // - [2] Consider having same mechanic than in prefer rule with capture group to match only if match, for example m-(?<screenSize)-\\d+ could appear multiple times but only if screenSize is NOT the same
+//
+//
+//
+// For eslint 9, create utilities to create configurations for common purposes (e.g. bootstrap utilities configuration for most common utilities)
