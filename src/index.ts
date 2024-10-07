@@ -17,16 +17,12 @@ export = {
 
 // TODO list; high number is high priority from 1 to 5
 // === Prefer rule
-// - [5] Implement prefer rule fixer for both parsers
-// - [1] consider adding rule for NO match (prefer X if there is A and B class but not C)
+// - [2] consider adding rule for NO match (prefer X if there is A and B class but not C)
+// - [3] implement test in prefer rule for match with same capture group (e.g. mt-1 mb-1 should ends in my-1 but mt-1 mb-2 should not be changed)
 //
-// === Forbidden rule
-// - [3] Add suggested fix for forbidden rule (define in eslintrc, only for message, not for actual fix)
-//
-// === Order rule
-// - [4] Create "group" notion that will order classes before using regex (e.g. group "small device" that matches "*-sm-*" and then will consider base regex order)
-//       Groups should be defined in order rule options
-//       Groups should be optional
-//       Groups can be named for better error message and easier understanding
-
-// Note : when all [5] priority are done, consider releasing 1.0.0 version
+// === no-duplicate rule
+// - [4] Implement no-duplicate rule
+//       Rule should only throw error if there are duplicates in the same class attribute
+//       One boolean to true/false to check exact duplication
+//       List of regex that should not match more than once in the class list
+// - [2] Consider having same mechanic than in prefer rule with capture group to match only if match, for example m-(?<screenSize)-\\d+ could appear multiple times but only if screenSize is NOT the same

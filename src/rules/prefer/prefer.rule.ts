@@ -7,6 +7,7 @@ import RuleContext = Rule.RuleContext;
 const rule: Rule.RuleModule = {
     meta: {
         type: 'problem',
+        fixable: 'code',
         docs: {
             description: 'Use class instead of other class or class group, handful to prefer shorter utility class and avoid repetition',
             category: 'Best Practices',

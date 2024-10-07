@@ -4,17 +4,32 @@ import { GetClassesWithMetadata } from '../../utils/get-classes-with-metadata';
 import { getPreferRuleErrorMessage } from './utils/prefer-rule-error-message';
 import { getCaptureGroupsValueByName } from './utils/get-capture-groups-value-by-name';
 import { enrichClassesWithRegexMatchMetadata } from './utils/enrich-classes-with-regex-match-metadata';
+import { PreferClass } from './types/prefer-rule-options';
+import { applyPreferRule } from './utils/apply-prefer-rule';
 import RuleContext = Rule.RuleContext;
+
+function fixPreferRule(
+    rangeToReplace: [number, number],
+    classes: string[],
+    preferClasses: PreferClass[],
+) {
+    return (fixer: Rule.RuleFixer): Rule.Fix | null => {
+        const newClasses = applyPreferRule(classes, preferClasses);
+        return fixer.replaceTextRange(rangeToReplace, newClasses);
+    };
+}
 
 export function preferRuleEslintHtmlParser(context: RuleContext): Rule.RuleListener {
     return {
         'Tag Attribute:has(AttributeKey[value="class"]) AttributeValue': (classAttributeValue: any) => {
+            const preferRuleOptions = getPreferRuleOptions(context);
 
-            const options = getPreferRuleOptions(context);
+            // Remove parent to avoid circular JSON when defining fixer
+            delete classAttributeValue.parent;
 
             const classes = GetClassesWithMetadata.fromEslintHtmlParser(classAttributeValue);
 
-            for (const preferGroup of options) {
+            for (const preferGroup of preferRuleOptions) {
                 const testAll = preferGroup.classList;
 
                 const classesWithMatches = enrichClassesWithRegexMatchMetadata(classes, testAll);
@@ -43,6 +58,11 @@ export function preferRuleEslintHtmlParser(context: RuleContext): Rule.RuleListe
 
                 context.report({
                     node: classAttributeValue,
+                    fix: fixPreferRule(
+                        classAttributeValue.range,
+                        classes.map((c) => c.name),
+                        preferRuleOptions,
+                    ),
                     message: getPreferRuleErrorMessage(
                         classesToReplace,
                         preferGroup.prefer,

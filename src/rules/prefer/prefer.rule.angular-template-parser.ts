@@ -1,22 +1,40 @@
 import { Rule } from 'eslint';
 import { getPreferRuleOptions } from './utils/get-prefer-rule-options';
 import { GetClassesWithMetadata } from '../../utils/get-classes-with-metadata';
-import { ClassWithMetadata } from '../order/types/class-with-metadata';
-import { classMatchesListAndCaptureGroupByRegex } from './utils/class-matches-list-and-capture-group';
-import { ClassWithMetadataAndMatches } from './types/class-with-metadata-and-matches';
 import { getPreferRuleErrorMessage } from './utils/prefer-rule-error-message';
 import { getCaptureGroupsValueByName } from './utils/get-capture-groups-value-by-name';
-import RuleContext = Rule.RuleContext;
 import { enrichClassesWithRegexMatchMetadata } from './utils/enrich-classes-with-regex-match-metadata';
+import { applyPreferRule } from './utils/apply-prefer-rule';
+import { PreferClass } from './types/prefer-rule-options';
+import RuleContext = Rule.RuleContext;
+
+function fixPreferRule(
+    rangeToReplace: [number, number],
+    classes: string[],
+    preferClasses: PreferClass[],
+) {
+    return (fixer: Rule.RuleFixer): Rule.Fix | null => {
+        const newClasses = applyPreferRule(classes, preferClasses);
+        return fixer.replaceTextRange(rangeToReplace, newClasses);
+    };
+}
 
 export function preferRuleAngularTemplateParser(context: RuleContext): Rule.RuleListener {
     return {
         'Element$1 > TextAttribute[name="class"]': (classTextAttribute: any) => {
-            const options = getPreferRuleOptions(context);
+            const preferRuleOptions = getPreferRuleOptions(context);
+
+            // Remove parent to avoid circular JSON when defining fixer
+            delete classTextAttribute.parent;
 
             const classes = GetClassesWithMetadata.fromAngularTemplateParser(classTextAttribute);
 
-            for (const preferGroup of options) {
+            const classValueRange: [number, number] = [
+                classTextAttribute.valueSpan.start.offset,
+                classTextAttribute.valueSpan.end.offset,
+            ];
+
+            for (const preferGroup of preferRuleOptions) {
                 const testAll = preferGroup.classList;
 
                 const classesWithMatches = enrichClassesWithRegexMatchMetadata(classes, testAll);
@@ -45,6 +63,11 @@ export function preferRuleAngularTemplateParser(context: RuleContext): Rule.Rule
 
                 context.report({
                     node: classTextAttribute,
+                    fix: fixPreferRule(
+                        classValueRange,
+                        classes.map((c) => c.name),
+                        preferRuleOptions,
+                    ),
                     message: getPreferRuleErrorMessage(
                         classesToReplace,
                         preferGroup.prefer,

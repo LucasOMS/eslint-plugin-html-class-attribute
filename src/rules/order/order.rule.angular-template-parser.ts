@@ -18,7 +18,7 @@ function fixClassesOrder(
     classes: ClassWithMetadata[],
 ) {
     return (fixer: Rule.RuleFixer): Rule.Fix => {
-        const classesInOrder = reorderClasses(classes, options);
+        const classesInOrder: string = reorderClasses(classes, options);
 
         return fixer.replaceTextRange(rangeToReplace, classesInOrder);
     };

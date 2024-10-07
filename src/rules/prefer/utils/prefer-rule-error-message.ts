@@ -1,3 +1,5 @@
+import { applyCaptureGroups } from './apply-capture-group';
+
 export function getPreferRuleErrorMessage(
     classesToReplace: string[],
     replacement: string,
@@ -5,11 +7,7 @@ export function getPreferRuleErrorMessage(
 ): string {
     const replacePlural = classesToReplace.length > 1 ? 'es' : '';
 
-    let replacementWithCaptureGroupsApplied = replacement;
-    if (captureGroupValueByName) {
-        for (const captureGroup of Object.keys(captureGroupValueByName)) {
-            replacementWithCaptureGroupsApplied = replacementWithCaptureGroupsApplied.replace(`$<${captureGroup}>`, captureGroupValueByName[captureGroup]);
-        }
-    }
+    const replacementWithCaptureGroupsApplied = applyCaptureGroups(replacement, captureGroupValueByName ?? {});
+
     return `Class${replacePlural} \`${classesToReplace.join('\`, \`')}\` should be replaced with \`${replacementWithCaptureGroupsApplied}\``;
 }

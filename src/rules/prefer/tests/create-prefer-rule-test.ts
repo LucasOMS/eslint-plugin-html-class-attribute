@@ -13,12 +13,14 @@ export function createValidPreferRuleTestCase(preferList: PreferRuleOptions, cod
 export function createInvalidPreferRuleTestCase(
     preferList: PreferRuleOptions,
     code: string,
+    fixedCode: string,
     classToReplace: string,
     replaceBy: string,
 ): RuleTester.InvalidTestCase {
     return {
         options: preferList ?? [],
         code: code,
+        output: fixedCode,
         errors: [{
             message: getPreferRuleErrorMessage(classToReplace.split(' '), replaceBy),
         }],
