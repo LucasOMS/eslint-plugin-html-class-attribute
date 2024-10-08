@@ -1,6 +1,6 @@
 {
     "name": "eslint-plugin-html-class-attribute",
-    "version": "1.0.2",
+    "version": "1.0.0",
     "description": "An ESLint rule to enforce usages of class in HTML file.",
     "main": "lib/index.js",
     "scripts": {
