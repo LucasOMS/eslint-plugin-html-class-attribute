@@ -56,5 +56,5 @@ jobs:
           skip_fetch: true
 
       # exec semantic-release after pushing changes
-#      - name: Release
-#        run: npx semantic-release
+      - name: Release
+        run: npx semantic-release
