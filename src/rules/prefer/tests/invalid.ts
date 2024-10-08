@@ -69,24 +69,24 @@ export const invalid = [
     // endregion
 
     // TODO Implement these tests, it should only match if both margins are equals
-    // createInvalidPreferRuleTestCase(
-    //     [{
-    //         classList: [
-    //             '^mb-(?<marginY>\\d+)',
-    //             '^mt-(?<marginY>\\d+)',
-    //         ],
-    //         prefer: 'my-$<marginY>',
-    //     }, {
-    //         classList: [
-    //             '^ml-(?<marginX>\\d+)',
-    //             '^mr-(?<marginX>\\d+)',
-    //         ],
-    //         prefer: 'mx-$<marginX>',
-    //     },
-    //     ],
-    //     `<h1 class="mt-1 mb-1 ml-1 mr-2"></h1>`,
-    //     `<h1 class="my-1 ml-1 mr-2"></h1>`,
-    //     'mt-1 mb-1',
-    //     'my-1',
-    // ),
+    createInvalidPreferRuleTestCase(
+        [{
+            classList: [
+                '^mb-(?<marginY>\\d+)',
+                '^mt-(?<marginY>\\d+)',
+            ],
+            prefer: 'my-$<marginY>',
+        }, {
+            classList: [
+                '^ml-(?<marginX>\\d+)',
+                '^mr-(?<marginX>\\d+)',
+            ],
+            prefer: 'mx-$<marginX>',
+        },
+        ],
+        `<h1 class="mt-1 mb-1 ml-1 mr-2"></h1>`,
+        `<h1 class="my-1 ml-1 mr-2"></h1>`,
+        'mt-1 mb-1',
+        'my-1',
+    ),
 ];

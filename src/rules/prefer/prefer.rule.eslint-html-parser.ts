@@ -6,6 +6,7 @@ import { getCaptureGroupsValueByName } from './utils/get-capture-groups-value-by
 import { enrichClassesWithRegexMatchMetadata } from './utils/enrich-classes-with-regex-match-metadata';
 import { PreferClass } from './types/prefer-rule-options';
 import { applyPreferRule } from './utils/apply-prefer-rule';
+import { captureGroupsHaveValueConflict } from './utils/class-matches-list-and-capture-group';
 import RuleContext = Rule.RuleContext;
 
 function fixPreferRule(
@@ -43,6 +44,10 @@ export function preferRuleEslintHtmlParser(context: RuleContext): Rule.RuleListe
                     });
                 });
                 if (!matchedAll) {
+                    continue;
+                }
+                const hasValueConflict = captureGroupsHaveValueConflict(classesWithMatches);
+                if (hasValueConflict) {
                     continue;
                 }
 

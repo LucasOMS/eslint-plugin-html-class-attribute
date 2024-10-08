@@ -32,7 +32,13 @@ function applyOnePreferClass(
         for (const classRegex of preferGroup.classList) {
             const matches = klass.match(new RegExp(classRegex));
             if (matches?.groups) {
-                Object.assign(allCaptureGroups, matches.groups);
+                for (const [captureGroupKey, value] of Object.entries(matches.groups)) {
+                    // On capture group value conflit (same capture group with different values), we don't apply the rule
+                    if (captureGroupKey in allCaptureGroups && allCaptureGroups[captureGroupKey] !== value) {
+                        return allClasses.join(' ');
+                    }
+                    allCaptureGroups[captureGroupKey] = value;
+                }
             }
         }
     }

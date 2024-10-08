@@ -18,7 +18,6 @@ export = {
 // TODO list; high number is high priority from 1 to 5
 // === Prefer rule
 // - [2] consider adding rule for NO match (prefer X if there is A and B class but not C)
-// - [3] implement test in prefer rule for match with same capture group (e.g. mt-1 mb-1 should ends in my-1 but mt-1 mb-2 should not be changed)
 //
 // === no-duplicate rule
 // - [4] Implement no-duplicate rule

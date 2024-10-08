@@ -6,6 +6,7 @@ import { getCaptureGroupsValueByName } from './utils/get-capture-groups-value-by
 import { enrichClassesWithRegexMatchMetadata } from './utils/enrich-classes-with-regex-match-metadata';
 import { applyPreferRule } from './utils/apply-prefer-rule';
 import { PreferClass } from './types/prefer-rule-options';
+import { captureGroupsHaveValueConflict } from './utils/class-matches-list-and-capture-group';
 import RuleContext = Rule.RuleContext;
 
 function fixPreferRule(
@@ -51,6 +52,11 @@ export function preferRuleAngularTemplateParser(context: RuleContext): Rule.Rule
                     continue;
                 }
 
+                const hasValueConflict = captureGroupsHaveValueConflict(classesWithMatches);
+                if (hasValueConflict) {
+                    continue;
+                }
+
                 // Keep regex that matched and keep capture groups
                 const matchedClasses = classesWithMatches
                     .filter((classWithMatches) => {
@@ -58,6 +64,7 @@ export function preferRuleAngularTemplateParser(context: RuleContext): Rule.Rule
                             return classWithMatches.matchMetadata[searchClass].matches;
                         });
                     });
+
 
                 const classesToReplace = matchedClasses.map((c) => c.name);
 

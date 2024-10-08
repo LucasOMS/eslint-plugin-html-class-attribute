@@ -2,6 +2,7 @@ import {
     ClassMatchesListWithCaptureGroups,
     IsMatchWithCaptureGroup,
 } from '../types/class-matches-list-with-capture-groups';
+import { ClassWithMetadataAndMatches } from '../types/class-with-metadata-and-matches';
 
 function classMatchesListAndCaptureGroup(
     className: string,
@@ -28,4 +29,27 @@ export function classMatchesListAndCaptureGroupByRegex(
         res[regex] = classMatchesListAndCaptureGroup(className, regex);
     }
     return res;
+}
+
+/**
+ * @returns {boolean} true if there is capture groups with different values
+ */
+export function captureGroupsHaveValueConflict(
+    classesWithMatches: ClassWithMetadataAndMatches[],
+): boolean {
+    const captureGroups: { [groupName: string]: any } = {};
+    for (const classWithMatch of classesWithMatches) {
+        for (const matchMetadata of Object.values(classWithMatch.matchMetadata)) {
+            if (matchMetadata.captureGroups) {
+                for (const [key, value] of Object.entries(matchMetadata.captureGroups)) {
+                    if (key in captureGroups
+                        && captureGroups[key] !== value) {
+                        return true;
+                    }
+                    captureGroups[key] = value;
+                }
+            }
+        }
+    }
+    return false;
 }

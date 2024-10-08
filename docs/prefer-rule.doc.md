@@ -31,7 +31,8 @@ type Options = {
 
 ## With capture groups
 
-You can use capture group to perform advanced search and replace. Please see example below
+You can use capture group to perform advanced search and replace. Please see example below.
+If you use capture groups with same name, the rule will only apply if the value of the capture group is the same in all classes.
 
 ### Example with capture groups
 
@@ -254,6 +255,50 @@ Given the following configuration:
 
 ```html
 <h1 class="flex-space-y-4 mt-0"></h1>
+```
+
+<br>
+
+#### Config
+```json
+{
+    "rules": {
+        "html-class-attribute/prefer": [
+            "error",
+            [
+                [
+                    {
+                        "classList": [
+                            "^mb-(?<marginY>\\d+)",
+                            "^mt-(?<marginY>\\d+)"
+                        ],
+                        "prefer": "my-$<marginY>"
+                    },
+                    {
+                        "classList": [
+                            "^ml-(?<marginX>\\d+)",
+                            "^mr-(?<marginX>\\d+)"
+                        ],
+                        "prefer": "mx-$<marginX>"
+                    }
+                ]
+            ]
+        ]
+    }
+}
+```
+
+#### ❌ Invalid Code
+
+```html
+<h1 class="mt-1 mb-1 ml-1 mr-2"></h1>
+           ~~~~~~~~~~~~~~~~~~~
+```
+
+#### :wrench: Fixed code
+
+```html
+<h1 class="my-1 ml-1 mr-2"></h1>
 ```
 
 </details>

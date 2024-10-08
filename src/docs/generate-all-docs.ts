@@ -54,7 +54,8 @@ generateDocForRule(
         description:
             `## With capture groups
 
-You can use capture group to perform advanced search and replace. Please see example below
+You can use capture group to perform advanced search and replace. Please see example below.
+If you use capture groups with same name, the rule will only apply if the value of the capture group is the same in all classes.
 
 ### Example with capture groups
 
