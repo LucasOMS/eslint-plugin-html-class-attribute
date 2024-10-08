@@ -8,7 +8,8 @@
         "prebuild": "rimraf lib; rimraf node_modules/@types/eslint/node_modules/@types/estree",
         "build": "tsc",
         "test": "jest",
-        "prepublish": "npm run clean && npm run build"
+        "docs": "npx ts-node src/docs/generate-all-docs.ts",
+        "prepublish": "npm run clean && npm run build && npm run docs"
     },
     "files": [
         "README.md",
@@ -43,7 +44,8 @@
         "rimraf": "5.0.5",
         "semantic-release": "^24.1.0",
         "ts-jest": "29.1.1",
-        "typescript": "5.3.3"
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
     },
     "peerDependencies": {
         "@angular-eslint/template-parser": "^17.0.0 || ^18.3.0",
