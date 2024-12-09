@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.0.0...v1.1.0) (2024-12-09)
+
+
+### Features
+
+* add angular 19 template parser support ([6481a45](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/commit/6481a452c9ffcae7cdc751451b69a6dfe452d44f))
+
 # 1.0.0 (2024-10-08)
 
 
