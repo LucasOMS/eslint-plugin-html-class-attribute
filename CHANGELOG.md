@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.1.0...v1.2.0) (2025-03-07)
+
+
+### Features
+
+* change way to get parser to support ESLint 9 configs ([743be2a](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/commit/743be2a886319e938a47ee0ac886321d66d4a9ec))
+
 # [1.1.0](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.0.0...v1.1.0) (2024-12-09)
 
 
