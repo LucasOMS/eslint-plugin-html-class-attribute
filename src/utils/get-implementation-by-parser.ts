@@ -14,9 +14,9 @@ export function getImplementationByParser(context: RuleContext,
         throw new Error('Parser is undefined');
     }
 
-    if (parser.includes('@angular-eslint')) {       // @angular-eslint/template-parser
+    if (parser.includes('angular-eslint')) {       // @angular-eslint/template-parser
         return angularTemplateParserImplem(context);
-    } else if (parser.includes('@html-eslint')) {   // @html-eslint/parser
+    } else if (parser.includes('html-eslint')) {   // @html-eslint/parser
         return htmlEslintImplem(context);
     } else {
         throw new Error(`Unsupported parser, please use @angular-eslint/template-parser or @html-eslint/parser, current is ${parser}`);
