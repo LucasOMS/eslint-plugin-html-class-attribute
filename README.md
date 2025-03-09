@@ -9,7 +9,7 @@ class attributes in HTML.
 
 ## Requirements
 
-This plugins needs `@angular-eslint/template-parser` or `@html-eslint/parser` to work.
+This plugin needs `@angular-eslint/template-parser` or `@html-eslint/parser` to work.
 By default, none is configured, you might need to define it manually in your eslint configuration.
 
 ### ESLint >= 9
@@ -29,7 +29,7 @@ export default [{
         parser: eslintHtmlParser,
     },
     plugins: {
-        'html-sort-attributes': htmlClassAttributePlugin,
+        'html-class-attribute': htmlClassAttributePlugin,
     },
     // ...
 }];
@@ -38,6 +38,7 @@ export default [{
 ### ESLint < 9
 
 #### HTML Eslint parser
+
 ```json
 {
     "parser": "@html-eslint/parser"
@@ -81,6 +82,12 @@ yarn add eslint-plugin-html-class-attribute --dev
 | [order](./docs/order-rule.doc.md)         | Enforce classes order                       | :white_check_mark: | :wrench: |        |
 | [prefer](./docs/prefer-rule.doc.md)       | Use class instead of others                 |                    | :wrench: |        |
 | [forbidden](./docs/forbidden-rule.doc.md) | Prevent usage of classes in class attribute |                    |          |        |
+
+## Build your RegExp with RegexBuilder
+
+The library exposes a `RegexBuilder` that can help you build your regexes in a more readable way.
+
+You can read more about it in the [RegexBuilder documentation](./docs/regex-builder.doc.md).
 
 ## Test your RegExp
 

@@ -2,6 +2,7 @@ import classesOrder from './rules/order/order.rule';
 import forbiddenClasses from './rules/forbidden/forbidden.rule';
 import preferClasses from './rules/prefer/prefer.rule';
 import recommended from './configs/recommended';
+import { RegexBuilder } from './utils/regex-builder';
 
 // Export our ESLint rules
 export = {
@@ -13,6 +14,7 @@ export = {
     configs: {
         recommended: recommended,
     },
+    RegexBuilder,
 };
 
 // TODO list; high number is high priority from 1 to 5
