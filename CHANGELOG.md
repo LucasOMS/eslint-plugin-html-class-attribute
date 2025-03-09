@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.2.0...v1.2.1) (2025-03-09)
+
+
+### Bug Fixes
+
+* parser names don't include @ anymore ([7bdf844](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/commit/7bdf8446bdc520fb15d0e376f85b670899e653ed))
+
 # [1.2.0](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.1.0...v1.2.0) (2025-03-07)
 
 
