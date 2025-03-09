@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.2.1...v1.3.0) (2025-03-09)
+
+
+### Features
+
+* add RegexBuilder to easily configure the plugin ([dbc1483](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/commit/dbc1483401d5b0ce9b5486bc173c02bf25a4a8ed))
+
 ## [1.2.1](https://github.com/LucasOMS/eslint-plugin-html-class-attribute/compare/v1.2.0...v1.2.1) (2025-03-09)
 
 
